@@ -1,9 +1,8 @@
 import styles from './Board.module.css';
-import React, { use } from 'react';
 import cn from 'classnames';
 import { useAppSelector } from './store/index.ts';
-import { ReactNode } from 'react';
 import { colourWord } from './functions';
+import type { ReactNode } from 'react';
 
 export default function Board() {
 
@@ -20,7 +19,7 @@ export default function Board() {
     // guessed letters
     for (let i = 0; i < guesses.length; i++) {
         const guess = guesses[i];
-        const colours = colourWord(guess, target);
+        const colours = colourWord(target, guess);
     
         for (let j = 0; j < colours.length; j++) {
             const cell = (

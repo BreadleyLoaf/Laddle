@@ -17,12 +17,13 @@ export default function Keyboard() {
             const key = event.key.toUpperCase();
             if (event.shiftKey || event.ctrlKey || event.altKey) {
                 return;
-            } else if (key.length === 1 && key >= "A" && key <= "Z") {
+            } else if (key.length === 1 && key.charCodeAt(0) >= CHAR_CODE_A && key.charCodeAt(0) <= CHAR_CODE_Z) {
                 dispatch(gameAction.inputLetter(key));
             } else if (key === "ENTER") {
                 dispatch(gameAction.guessWord());
             } else if (key === "BACKSPACE") {
                 dispatch(gameAction.deleteLetter());
+            } else {
             }
         };
 
@@ -87,11 +88,31 @@ function Key(props: KeyProps) {
         colour = colourKeys(props.char, target, guesses);
     }
 
-    
+    const handleClick = () => {
+        console.log("clicked " + isLetter, props.char);
+        if (isLetter && props.char !== "DEL") {
+            dispatch(gameAction.inputLetter(props.char));
+        } else if (props.char === "DEL") {
+            dispatch(gameAction.deleteLetter());
+        } else if (props.char === "✓") {
+            dispatch(gameAction.guessWord());
+        }
+    };
+
+   // console.log(props.char, colour, styles.green, styles.yellow, styles.black);
 
     return (
-        <button className={cn(styles.key, props.wide && styles.wide)}>
-            {props.char}        
+        <button 
+        onClick={handleClick}
+        className={cn(
+            styles.key, 
+            props.wide && styles.wide,
+            colour === "G" && styles.green,
+            colour === "Y" && styles.yellow,
+            colour === "B" && styles.black,
+        )}>
+            {props.char}    
         </button>
+
     );
 }

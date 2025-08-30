@@ -1,6 +1,6 @@
-import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
+import { type PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import WORD_LIST from "./wordlist.json";
-import { TypedUseSelectorHook, useSelector } from "react-redux";
+import { type TypedUseSelectorHook, useSelector } from "react-redux";
 
 export type Game = {
     target: string;
@@ -36,22 +36,25 @@ const gameSlice = createSlice({
         input: "",
         gameOver: false,
         won: 0,
+        message: "Welcome to Laddle! every new word starts with the last letter of your previous word. solve as many as you can!"
       };
     },
 
     inputLetter(state, action: PayloadAction<string>) {
         if (state.input.length <5) {
             state.input = state.input + action.payload;
+            console.log(state.input);
         }
     },
 
     deleteLetter(state) {
         if (state.input.length > 0) {
-            state.input = state.input.substring(0, -1);
+            state.input = state.input.substring(0, state.input.length - 1);
         }
     },
 
     guessWord(state) {
+        console.log(state.target)
         const input = state.input.toUpperCase();
         if (input.length !== 5) {
             return;
@@ -66,8 +69,9 @@ const gameSlice = createSlice({
             state.won += 1;
             state.guesses = [];
             const newTargetWords = WORD_LIST.target.filter(
-                (word: string) => word[0].toUpperCase() === input[0].toUpperCase()
+                (word: string) => word[0].toUpperCase() === input[4].toUpperCase()
             )
+            console.log(newTargetWords);
             if (newTargetWords.length > 0) {
                 let index = Math.floor(Math.random() * newTargetWords.length)
                 while(state.prev.includes(newTargetWords[index])) {

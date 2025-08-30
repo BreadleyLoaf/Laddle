@@ -22,3 +22,21 @@
 .key.wide {
     width: 64px;
 }
+
+.key.black {
+  border: none;
+  background-color: #424242;
+  color: #ffffff;
+}
+ 
+.key.yellow {
+  border: none;
+  background-color: #fbc02d;
+  color: #ffffff;
+}
+ 
+.key.green {
+  border: none;
+  background-color: #388e3c;
+  color: #ffffff;
+}
