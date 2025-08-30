@@ -10,6 +10,7 @@ export type Game = {
     gameOver: boolean;
     won: number;
     message?: string;
+    alert?: string;
 };
 
 const initialState: Game = {
@@ -19,7 +20,8 @@ const initialState: Game = {
     input: "",
     gameOver: false,
     won: 0,
-    message: "Welcome to Laddle! Start a new game to begin.",
+    message: undefined,
+    alert: undefined,
 };
 
 const gameSlice = createSlice({
@@ -36,7 +38,8 @@ const gameSlice = createSlice({
         input: "",
         gameOver: false,
         won: 0,
-        message: "Welcome to Laddle! every new word starts with the last letter of your previous word. solve as many as you can!"
+        message: "Welcome to Laddle! every new word starts with the last letter of your previous word. solve as many as you can!",
+        alert: undefined,
       };
     },
 
@@ -53,6 +56,11 @@ const gameSlice = createSlice({
         }
     },
 
+    clearAlert(state) {
+        console.log("clearing alert");
+        state.alert = undefined;
+    },
+
     guessWord(state) {
         console.log(state.target)
         const input = state.input.toUpperCase();
@@ -60,6 +68,9 @@ const gameSlice = createSlice({
             return;
         }
         if (!WORD_LIST.valid.includes(input)) {
+            return;
+        } else if (state.prev.includes(input)) {
+            state.alert = "This word is already in the ladder!";
             return;
         }
         state.guesses.push(input);
@@ -81,7 +92,7 @@ const gameSlice = createSlice({
                     }
                     if (new_Index === index) {
                         state.target = WORD_LIST.target[Math.floor(Math.random() * WORD_LIST.target.length)];
-                        state.message = "No more words starting with that letter. Starting a new ladder!";
+                        state.alert = "No more words starting with that letter. Starting a new ladder!";
                         return;
                     } else {
                         state.message = "Correct! Your previous word was: " + input;

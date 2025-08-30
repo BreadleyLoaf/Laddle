@@ -14,9 +14,9 @@ export default function Message() {
     let ladder = "\n";
     for (let i = 0; i < previous.length - 1; i++) {
         if (previous[i][4] !== previous[i + 1][0]) {
-            ladder += previous[i] + " ->  ";
-        } else {
             ladder += previous[i] + " >>> ";
+        } else {
+            ladder += previous[i] + " -> ";
         }
     }
 
