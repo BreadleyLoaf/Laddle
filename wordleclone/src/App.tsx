@@ -21,7 +21,7 @@ export default function App() {
   return (
     <div className={styles.app}>
       <Alert />
-      <h1 className={styles.title}>LADDLE</h1>
+      <h1 className={styles.title}>🪜 LADDLE 🪜</h1>
       <Board />
       <p className={styles.statusText}>Current score: {won}</p>
       <Keyboard />

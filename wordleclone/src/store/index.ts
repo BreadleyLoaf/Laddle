@@ -44,6 +44,7 @@ const gameSlice = createSlice({
     },
 
     inputLetter(state, action: PayloadAction<string>) {
+        if (state.gameOver) return;
         if (state.input.length <5) {
             state.input = state.input + action.payload;
             console.log(state.input);
@@ -51,6 +52,7 @@ const gameSlice = createSlice({
     },
 
     deleteLetter(state) {
+        if (state.gameOver) return;
         if (state.input.length > 0) {
             state.input = state.input.substring(0, state.input.length - 1);
         }
@@ -62,6 +64,7 @@ const gameSlice = createSlice({
     },
 
     guessWord(state) {
+        if (state.gameOver) return;
         console.log(state.target)
         const input = state.input.toUpperCase();
         if (input.length !== 5) {
@@ -92,7 +95,7 @@ const gameSlice = createSlice({
                     }
                     if (new_Index === index) {
                         state.target = WORD_LIST.target[Math.floor(Math.random() * WORD_LIST.target.length)];
-                        state.alert = "No more words starting with that letter. Starting a new ladder!";
+                        state.message = "Correct! No more words starting with that letter. Random word chosen.";
                         return;
                     } else {
                         state.message = "Correct! Your previous word was: " + input;
@@ -105,8 +108,10 @@ const gameSlice = createSlice({
                 return;
             } 
 
-        } else if (state.guesses.length >= 6) {
+        } 
+        if (state.guesses.length >= 6) {
             state.gameOver = true;
+            state.message = "Game Over! The word was: " + state.target + ". Your ladder was " + state.prev.length + " words long.";
         }
     }
   },

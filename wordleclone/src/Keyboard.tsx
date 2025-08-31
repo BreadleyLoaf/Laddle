@@ -11,6 +11,7 @@ const CHAR_CODE_Z = "Z".charCodeAt(0);
 export default function Keyboard() {
 
     const dispatch = useDispatch();
+    const over = useAppSelector((s) => s.game.gameOver);
 
     useEffect(() => {
         const handler = (event: KeyboardEvent) => {
@@ -20,7 +21,12 @@ export default function Keyboard() {
             } else if (key.length === 1 && key.charCodeAt(0) >= CHAR_CODE_A && key.charCodeAt(0) <= CHAR_CODE_Z) {
                 dispatch(gameAction.inputLetter(key));
             } else if (key === "ENTER") {
-                dispatch(gameAction.guessWord());
+                console.log(over);
+                if (over) {
+                    dispatch(gameAction.start(Date.now()));
+                } else {
+                    dispatch(gameAction.guessWord());
+                }            
             } else if (key === "BACKSPACE") {
                 dispatch(gameAction.deleteLetter());
             } else {
